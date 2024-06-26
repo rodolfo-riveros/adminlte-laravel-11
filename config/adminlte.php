@@ -318,7 +318,12 @@ return [
         [
             'text' => 'Categoria',
             'route' => 'admin.categoria.index',
-            'icon' => 'fas fa-fw fa-home',
+            'icon' => 'fas fa-fw fa-file',
+        ],
+        [
+            'text' => 'Producto',
+            'route' => 'admin.producto.index',
+            'icon' => 'fas fa-fw fa-pen',
         ],
         // ['header' => 'account_settings'],
         // [
