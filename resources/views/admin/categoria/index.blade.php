@@ -3,6 +3,10 @@
 @section('title', 'Categoria')
 
 @section('content_header')
+    <h1>Categoría</h1>
+@stop
+
+@section('content_header')
 @stop
 
 @section('content')
