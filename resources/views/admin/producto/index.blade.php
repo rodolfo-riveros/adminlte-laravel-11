@@ -13,11 +13,27 @@
     @livewire('admin.producto-index')
 @stop
 
+@section('footer')
+    <div class="footer text-center py-3">
+        © 2024 Todos los derechos reservados. Tienda XStation
+    </div>
+@stop
+
 @section('css')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.4.1/css/responsive.bootstrap5.min.css">
+    <style>
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            bottom: 0;
+            width: 100%;
+            z-index: 1030; /* Ensure it is above other elements */
+            box-shadow: 0 -1px 5px rgba(0,0,0,.1); /* Optional shadow for better separation */
+        }
+    </style>
 @stop
 
 @section('js')

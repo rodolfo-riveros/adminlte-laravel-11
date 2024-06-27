@@ -15,6 +15,7 @@ class ProductoController extends Controller
 
     public function store(Request $request)
     {
+        // Validación de los datos
         $validateData = $request->validate([
             'category_id' => 'required|exists:categories,id',
             'name' => 'required',
@@ -29,7 +30,20 @@ class ProductoController extends Controller
         $producto->description = $validateData['description'];
         $producto->precio = $validateData['precio'];
         $producto->stock = $validateData['stock'];
-        $producto->stock = $validateData['stock'];
+
+        // Manejo del archivo de imagen
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+            $imagePath = $imageFile->store('images', 'public');
+            $producto->image = $imagePath;
+        }
+
+        // Manejo del archivo de manual
+        if ($request->hasFile('manual')) {
+            $manualFile = $request->file('manual');
+            $manualPath = $manualFile->store('manuals', 'public');
+            $producto->manual = $manualPath;
+        }
 
         $producto->save();
 
@@ -47,7 +61,9 @@ class ProductoController extends Controller
             'name' => 'required',
             'description' => 'required',
             'precio' => 'required|numeric',
-            'stock' => 'required|integer'
+            'stock' => 'required|integer',
+            'image' => 'required',
+            'manual' => 'required|file|mimes:pdf',
         ]);
 
         $producto = Product::findOrFail($id);
@@ -56,8 +72,18 @@ class ProductoController extends Controller
         $producto->description = $validateData['description'];
         $producto->precio = $validateData['precio'];
         $producto->stock = $validateData['stock'];
-        $producto->stock = $validateData['image'];
-        $producto->stock = $validateData['manual'];
+
+        if ($request->hasFile('image')) {
+            $imageFile = $request->file('image');
+            $imagePath = $imageFile->store('image', 'public');
+            $producto->image = $imagePath;
+        }
+
+        if ($request->hasFile('manual')) {
+            $manualFile = $request->file('manual');
+            $manualPath = $manualFile->store('manual', 'public');
+            $producto->manual = $manualPath;
+        }
 
         $producto->save();
 

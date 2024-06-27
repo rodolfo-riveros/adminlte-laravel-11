@@ -10,11 +10,25 @@
     @livewire('admin.home-index')
 @stop
 
+@section('footer')
+    <div class="footer text-center py-3">
+        © 2024 Todos los derechos reservados. Tienda XStation
+    </div>
+@stop
+
 @section('css')
-    {{-- Add here extra stylesheets --}}
-    {{-- <link rel="stylesheet" href="/css/admin_custom.css"> --}}
+    <style>
+        .footer {
+            background-color: #f8f9fa;
+            padding: 20px;
+            bottom: 0;
+            width: 100%;
+            z-index: 1030; /* Ensure it is above other elements */
+            box-shadow: 0 -1px 5px rgba(0,0,0,.1); /* Optional shadow for better separation */
+        }
+    </style>
 @stop
 
 @section('js')
-    <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script>
+    {{-- <script> console.log("Hi, I'm using the Laravel-AdminLTE package!"); </script> --}}
 @stop

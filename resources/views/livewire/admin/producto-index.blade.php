@@ -26,13 +26,13 @@
             </h3>
         </div>
         <div class="card-body">
-            <form method="POST" action="{{ route('admin.producto.store') }}">
+            <form method="POST" action="{{ route('admin.producto.store') }}" enctype="multipart/form-data">
                 @csrf
                 <div class="row">
                     <div class="col-md-6">
                         <div class="form-group">
                             <label>Categoría</label>
-                            <select class="form-control" name="category_id">
+                            <select class="form-control" name="category_id" required>
                                 <option selected disabled>Seleccione una opción</option>
                                 @foreach($categories as $category)
                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -69,20 +69,23 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <label for="image">Image</label>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="image" accept="image/*" required>
-                            <label class="custom-file-label" for="image">Ingrese la imagen</label>
+                        <div class="form-group">
+                            <label for="image">Imagen</label>
+                            <div class="custom-file">
+                                <input type="file" name="image" class="custom-file-input" id="image" onchange="updateFileName(this)" accept="image/*" required>
+                                <label class="custom-file-label" for="image">Seleccione la imagen</label>
+                            </div>
                         </div>
                     </div>
-                    
                 </div>
                 <div class="row">
                     <div class="col-md-6">
-                        <label for="manual">Manual</label>
-                        <div class="custom-file">
-                            <input type="file" class="custom-file-input" id="manual" accept=".pdf,.doc,.docx" required onchange="validateDocument()">
-                            <label class="custom-file-label" for="manual">Ingrese el manual</label>
+                        <div class="form-group">
+                            <label for="manual">Manual</label>
+                            <div class="custom-file">
+                                <input type="file" name="manual" class="custom-file-input" id="manual" onchange="updateFileName(this)" accept=".pdf" required>
+                                <label class="custom-file-label" for="manual">Seleccione el manual</label>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -126,8 +129,38 @@
                         <td>{{ $producto->description }}</td>
                         <td>{{ $producto->precio }}</td>
                         <td>{{ $producto->stock }}</td>
-                        <td>{{ $producto->image }}</td>
-                        <td>{{ $producto->manual }}</td>
+                        <td>
+                            @if($producto->image)
+                                <img src="{{ asset('storage/' . $producto->image) }}" alt="Imagen del producto" style="width: 50px; height: auto;">
+                            @else
+                                <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-image">
+                                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                                    <circle cx="8.5" cy="8.5" r="1.5"></circle>
+                                    <polyline points="21 15 16 10 5 21"></polyline>
+                                </svg>
+                            @endif
+                        </td>
+                        <td>
+                            @if($producto->manual)
+                                <a href="{{ asset('storage/' . $producto->manual) }}" target="_blank">
+                                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                        <polyline points="14 2 14 8 20 8"></polyline>
+                                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                                        <polyline points="10 9 9 9 8 9"></polyline>
+                                    </svg>
+                                </a>
+                            @else
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-file">
+                                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                                    <polyline points="14 2 14 8 20 8"></polyline>
+                                    <line x1="16" y1="13" x2="8" y2="13"></line>
+                                    <line x1="16" y1="17" x2="8" y2="17"></line>
+                                    <polyline points="10 9 9 9 8 9"></polyline>
+                                </svg>
+                            @endif
+                        </td>
                         <td width="10px">
                             <a href="" class="btn btn-warning" data-toggle="modal" data-target="#editModal{{ $producto->id }}"><i class="fas fa-edit"></i></a>
                         </td>
@@ -201,3 +234,10 @@
         </div>
     </div>
 </div>
+<script>
+    function updateFileName(input) {
+        var fileName = input.files[0].name;
+        var label = input.nextElementSibling;
+        label.innerHTML = fileName;
+    }
+</script>
