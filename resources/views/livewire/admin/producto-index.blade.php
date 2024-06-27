@@ -68,6 +68,23 @@
                             <input type="text" class="form-control" name="stock" placeholder="Escriba el stock del producto" required>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <label for="image">Image</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="image" accept="image/*" required>
+                            <label class="custom-file-label" for="image">Ingrese la imagen</label>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <label for="manual">Manual</label>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" id="manual" accept=".pdf,.doc,.docx" required onchange="validateDocument()">
+                            <label class="custom-file-label" for="manual">Ingrese el manual</label>
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Registrar</button>
@@ -94,6 +111,8 @@
                         <th>Descripción</th>
                         <th>Precio</th>
                         <th>Stock</th>
+                        <th>Image</th>
+                        <th>Manual</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
                     </tr>
@@ -107,6 +126,8 @@
                         <td>{{ $producto->description }}</td>
                         <td>{{ $producto->precio }}</td>
                         <td>{{ $producto->stock }}</td>
+                        <td>{{ $producto->image }}</td>
+                        <td>{{ $producto->manual }}</td>
                         <td width="10px">
                             <a href="" class="btn btn-warning" data-toggle="modal" data-target="#editModal{{ $producto->id }}"><i class="fas fa-edit"></i></a>
                         </td>
@@ -156,6 +177,14 @@
                                         <div class="form-group">
                                             <label for="stock{{ $producto->id }}">Stock</label>
                                             <input type="text" class="form-control" name="stock" id="stock{{ $producto->id }}" value="{{ $producto->stock }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="stock{{ $producto->id }}">Image</label>
+                                            <input type="text" class="form-control" name="image" id="image{{ $producto->id }}" value="{{ $producto->image }}" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="stock{{ $producto->id }}">Manual</label>
+                                            <input type="text" class="form-control" name="manual" id="manual{{ $producto->id }}" value="{{ $producto->manual}}" required>
                                         </div>
                                     </div>
                                     <div class="modal-footer">

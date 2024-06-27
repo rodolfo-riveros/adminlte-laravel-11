@@ -23,6 +23,8 @@ return new class extends Migration
             $table->text('description');
             $table->double('precio');
             $table->integer('stock');
+            $table->text('image');
+            $table->text('manual');
             $table->timestamps();
         });
     }

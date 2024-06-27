@@ -29,6 +29,7 @@ class ProductoController extends Controller
         $producto->description = $validateData['description'];
         $producto->precio = $validateData['precio'];
         $producto->stock = $validateData['stock'];
+        $producto->stock = $validateData['stock'];
 
         $producto->save();
 
@@ -55,6 +56,8 @@ class ProductoController extends Controller
         $producto->description = $validateData['description'];
         $producto->precio = $validateData['precio'];
         $producto->stock = $validateData['stock'];
+        $producto->stock = $validateData['image'];
+        $producto->stock = $validateData['manual'];
 
         $producto->save();
 
