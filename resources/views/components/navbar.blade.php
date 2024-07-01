@@ -24,7 +24,7 @@
                             <a class="text-white transition hover:text-lime-500" href="#"> Servicios </a>
                         </li>
                         <li>
-                            <a class="text-white transition hover:text-lime-500" href="#"> Carrito </a>
+                            <a class="text-white transition hover:text-lime-500" href="{{ route('carrito') }}"> Carrito </a>
                         </li>
                         <li>
                             <a class="text-white transition hover:text-lime-500" href="#"> Mi cuenta </a>
