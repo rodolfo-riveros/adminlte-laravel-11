@@ -18,10 +18,12 @@ class CategoryController extends Controller
         $validateData = $request->validate([
             'name' => 'required',
             'description' => 'required',
+            'color' => 'required',
         ]);
 
         $category = new Category();
         $category->name = $validateData['name'];
+        $category->color = $validateData['color'];
         $category->description = $validateData['description'];
 
         $category->save();
@@ -38,11 +40,13 @@ class CategoryController extends Controller
         $validateData = $request->validate([
             'name' => 'required',
             'description' => 'required',
+            'color' => 'required',
         ]);
 
         $category = Category::findOrFail($id);
         $category->name = $validateData['name'];
         $category->description = $validateData['description'];
+        $category->color = $validateData['color'];
 
         $category->save();
 

@@ -42,6 +42,14 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="color">Color</label>
+                            <input type="color" class="form-control" name="color" required>
+                        </div>
+                    </div>
+                </div>
                 <div class="modal-footer">
                     <button type="submit" class="btn btn-primary">Registrar</button>
                 </div>
@@ -64,6 +72,7 @@
                         <th>Id</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
+                        <th>Color</th>
                         <th>Editar</th>
                         <th>Eliminar</th>
                     </tr>
@@ -74,6 +83,11 @@
                         <td>{{ $categorias->id}}</td>
                         <td>{{ $categorias->name}}</td>
                         <td>{{ $categorias->description}}</td>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <span class="d-inline-block rounded-circle mr-2" style="width: 24px; height: 24px; background-color: {{ $categorias->color }};"></span>
+                            </div>
+                        </td>
                         <td width="10px">
                             <a href="" class="btn btn-warning" data-toggle="modal" data-target="#editModal{{ $categorias->id }}"><i class="fas fa-edit"></i></a>
                         </td>
@@ -107,6 +121,10 @@
                                         <div class="form-group">
                                             <label for="description{{ $categorias->id }}">Descripción</label>
                                             <input type="text" class="form-control" name="description" id="description{{ $categorias->id}}" value="{{ $categorias->description}}">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="color{{ $categorias->id }}">Color</label>
+                                            <input type="color" class="form-control" name="color" id="color{{ $categorias->id}}" value="{{ $categorias->color}}">
                                         </div>
                                         <!-- Otros campos del formulario -->
                                     </div>

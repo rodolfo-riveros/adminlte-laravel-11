@@ -21,7 +21,7 @@
         </header>
         <main class="flex-1 bg-background">
             <div class="container mx-auto p-8 gap-8">
-                @include('components.pago', ['categories' => $categories], ['productos' => $productos])
+                @include('components.pago', ['categories' => $categories, 'productos' => $productos])
             </div>
             @include('components.footer')
         </main>

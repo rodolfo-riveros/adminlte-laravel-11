@@ -19,7 +19,7 @@
         </header>
         <main class="flex-1 bg-background">
             <div class="container mx-auto py-8 px-4 grid grid-cols-1 md:grid-cols-[240px_1fr] gap-8">
-                @include('components.categoria', ['categories' => $categories], ['productos' => $productos])
+                @include('components.categoria', ['categories' => $categories, 'productos' => $productos])
                 @include('components.producto', ['productos' => $productos])
             </div>
             @include('components.footer')

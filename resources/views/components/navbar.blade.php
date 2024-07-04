@@ -12,22 +12,19 @@
                 <nav aria-label="Global">
                     <ul class="flex items-center gap-6 text-base">
                         <li>
-                            <a class="text-white transition hover:text-lime-500" href="#"> About </a>
-                        </li>
-                        <li>
-                            <a class="text-white transition hover:text-lime-500" href="#"> Productos </a>
+                            <a class="text-white transition hover:text-lime-500" href="/"> Productos </a>
                         </li>
                         <li>
                             <a class="text-white transition hover:text-lime-500" href="#"> Mis pedidos </a>
                         </li>
                         <li>
-                            <a class="text-white transition hover:text-lime-500" href="#"> Servicios </a>
-                        </li>
-                        <li>
                             <a class="text-white transition hover:text-lime-500" href="{{ route('carrito') }}"> Carrito </a>
                         </li>
                         <li>
-                            <a class="text-white transition hover:text-lime-500" href="#"> Mi cuenta </a>
+                            <a class="text-white transition hover:text-lime-500" href="#"> Servicios </a>
+                        </li>
+                        <li>
+                            <a class="text-white transition hover:text-lime-500" href="#"> Nosotros </a>
                         </li>
                     </ul>
                 </nav>

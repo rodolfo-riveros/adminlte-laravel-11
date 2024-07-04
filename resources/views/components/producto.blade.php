@@ -10,7 +10,7 @@
                 <p class="text-muted-foreground mb-4 text-white/90">{{ $producto->description}}</p>
                 <div class="flex items-center justify-between">
                     <span class="text-primary font-bold text-lg text-lime-500">S/.{{ $producto->precio }}</span>
-                    <a class="group inline-block rounded-full bg-gradient-to-r from-teal-500 via-green-500 to-lime-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75" href="#">
+                    <a class="group inline-block rounded-full bg-gradient-to-r from-teal-500 via-green-500 to-lime-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75" href="{{ route('carrito') }}">
                         <span class="block rounded-full bg-white px-8 py-3 text-sm font-medium group-hover:bg-transparent">
                             Agregar al carrito
                         </span>
@@ -132,7 +132,6 @@
                             </div>
                         </div>
                     </section>
-
                 </div>
             </div>
         </div>
