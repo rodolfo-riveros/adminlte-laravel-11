@@ -1,84 +1,209 @@
 <div class="flex flex-col md:flex-row gap-4 p-4">
     <div class="flex-1 space-y-4">
-        <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-md shadow">
-            <h2 class="text-xl font-semibold text-white">Cesta de la compra (1)</h2>
-            <div class="flex items-center justify-between mt-2 text-sm">
-                <div class="flex items-center space-x-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="text-lime-500">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="m9 12 2 2 4-4"></path>
+        <div x-data="{ open: false }">
+            <div @click="open = ! open"
+                class="p-4 bg-gray-800 w-full rounded flex justify-between items-center cursor-pointer">
+                <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="currentColor"
+                        viewBox="0 0 576 512" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M64 32C28.7 32 0 60.7 0 96V416c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V96c0-35.3-28.7-64-64-64H64zm80 256h64c44.2 0 80 35.8 80 80c0 8.8-7.2 16-16 16H80c-8.8 0-16-7.2-16-16c0-44.2 35.8-80 80-80zm-32-96a64 64 0 1 1 128 0 64 64 0 1 1 -128 0zm256-32H496c8.8 0 16 7.2 16 16s-7.2 16-16 16H368c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H496c8.8 0 16 7.2 16 16s-7.2 16-16 16H368c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 64H496c8.8 0 16 7.2 16 16s-7.2 16-16 16H368c-8.8 0-16-7.2-16-16s7.2-16 16-16z" />
                     </svg>
-                    <span class="text-white/80">Seleccionar todos los artículos</span>
+                    <h4 class="font-medium text-xl text-white">Tus datos</h4>
                 </div>
-                <a href="#" class="text-lime-600" rel="ugc">
-                    Borrar artículos seleccionados
-                </a>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
+            </div>
+            <div x-show="open" @click.outside="open = false" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 translate-y-0" x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 translate-y-10" x-transition:leave-end="opacity-0 translate-y-0"
+                class="w-full bg-gray-800 p-4 mt-4 rounded-lg shadow-lg">
+                @if (session('success'))
+                    <div class="bg-green-500 text-white p-4 rounded-md mb-4">
+                        {{ session('success') }}
+                    </div>
+                @endif
+
+                @if ($errors->any())
+                    <div class="bg-red-500 text-white p-4 rounded-md mb-4">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
+
+                <form action="{{ route('clientes.store') }}" method="POST" class="px-4 py-8 sm:px-6 lg:px-8">
+                    @csrf
+                    <input type="hidden" name="user_id" value="{{ $user->id }}">
+
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label
+                                class="text-white text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                for="name">
+                                Nombre
+                            </label>
+                            <input
+                                class="flex h-10 w-full rounded-md border border-input bg-gray-800 text-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                id="name" placeholder="Introduce tu nombre" name="name"
+                                value="{{ $user->name }}" />
+                        </div>
+                        <div class="space-y-2">
+                            <label
+                                class="text-white text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                for="email">
+                                Correo electrónico
+                            </label>
+                            <input
+                                class="flex h-10 w-full rounded-md border border-input bg-gray-800 text-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                id="email" placeholder="Introduce tu correo electrónico" name="email"
+                                type="email" value="{{ $user->email }}" />
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="space-y-2">
+                            <label
+                                class="text-white text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                for="phone">
+                                Número de celular
+                            </label>
+                            <input
+                                class="flex h-10 w-full rounded-md border border-input bg-gray-800 text-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                id="phone" placeholder="Ingrese su número de celular" name="phone"
+                                type="tel" />
+                        </div>
+                    </div>
+                    <div class="space-y-2 mt-3">
+                        <label
+                            class="text-white text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                            for="address">
+                            Dirección de envío
+                        </label>
+                        <div class="grid grid-cols-3 gap-4">
+                            <input
+                                class="flex h-10 w-full rounded-md border border-input bg-gray-800 text-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                id="address" placeholder="Dirección" name="address" />
+                            <input
+                                class="flex h-10 w-full rounded-md border border-input bg-gray-800 text-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                id="city" placeholder="Ciudad" name="city" />
+                            <input
+                                class="flex h-10 w-full rounded-md border border-input bg-gray-800 text-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                id="state" placeholder="Departamento" name="state" />
+                            <input
+                                class="flex h-10 w-full rounded-md border border-input bg-gray-800 text-white px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-gray-400 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-lime-500 focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
+                                id="zip" placeholder="Código postal" name="zip" />
+                        </div>
+                    </div>
+
+                    <div class="mt-6 flex justify-end">
+                        <button type="submit"
+                            class="inline-flex items-center px-4 py-2 bg-lime-500 border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-lime-700 active:bg-lime-900 focus:outline-none focus:border-lime-900 focus:ring focus:ring-lime-300 disabled:opacity-25 transition">
+                            Enviar
+                        </button>
+                    </div>
+                </form>
+
             </div>
         </div>
-        @foreach ($productos as $product)
-            <div class="p-4  bg-gray-100 dark:bg-gray-800 rounded-md shadow">
-                <div class="flex items-center mt-4 space-x-4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none"
-                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                        class="text-lime-500">
-                        <circle cx="12" cy="12" r="10"></circle>
-                        <path d="m9 12 2 2 4-4"></path>
+        <div x-data="{ open: false }">
+            <div @click="open = ! open"
+                class="p-4 bg-gray-800 w-full rounded flex justify-between items-center cursor-pointer">
+                <div class="flex items-center gap-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-white" fill="currentColor"
+                        viewBox="0 0 448 512" stroke="currentColor" stroke-width="2">
+                        <path
+                            d="M388.3 104.1a4.7 4.7 0 0 0 -4.4-4c-2 0-37.2-.8-37.2-.8s-21.6-20.8-29.6-28.8V503.2L442.8 472S388.7 106.5 388.3 104.1zM288.7 70.5a116.7 116.7 0 0 0 -7.2-17.6C271 32.9 255.4 22 237 22a15 15 0 0 0 -4 .4c-.4-.8-1.2-1.2-1.6-2C223.4 11.6 213 7.6 200.6 8c-24 .8-48 18-67.3 48.8-13.6 21.6-24 48.8-26.8 70.1-27.6 8.4-46.8 14.4-47.2 14.8-14 4.4-14.4 4.8-16 18-1.2 10-38 291.8-38 291.8L307.9 504V65.7a41.7 41.7 0 0 0 -4.4 .4S297.9 67.7 288.7 70.5zM233.4 87.7c-16 4.8-33.6 10.4-50.8 15.6 4.8-18.8 14.4-37.6 25.6-50 4.4-4.4 10.4-9.6 17.2-12.8C232.2 54.9 233.8 74.5 233.4 87.7zM200.6 24.4A27.5 27.5 0 0 1 215 28c-6.4 3.2-12.8 8.4-18.8 14.4-15.2 16.4-26.8 42-31.6 66.5-14.4 4.4-28.8 8.8-42 12.8C131.3 83.3 163.8 25.2 200.6 24.4zM154.2 244.6c1.6 25.6 69.3 31.2 73.3 91.7 2.8 47.6-25.2 80.1-65.7 82.5-48.8 3.2-75.7-25.6-75.7-25.6l10.4-44s26.8 20.4 48.4 18.8c14-.8 19.2-12.4 18.8-20.4-2-33.6-57.2-31.6-60.8-86.9-3.2-46.4 27.2-93.3 94.5-97.7 26-1.6 39.2 4.8 39.2 4.8L221.4 225.4s-17.2-8-37.6-6.4C154.2 221 153.8 239.8 154.2 244.6zM249.4 82.9c0-12-1.6-29.2-7.2-43.6 18.4 3.6 27.2 24 31.2 36.4Q262.6 78.7 249.4 82.9z" />
                     </svg>
-                    <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}" class="w-20 h-20 rounded-md" width="80" height="80"
-                        style="aspect-ratio: 80 / 80; object-fit: cover;" />
-                    <div class="flex-1">
-                        <h4 class="font-medium text-white">
-                            {{ $product->name }}
-                        </h4>
-                        <div class="text-white/80 inline-flex w-fit items-center whitespace-nowrap rounded-full border py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 border-transparent bg-secondary text-secondary-foreground hover:bg-secondary/80"
-                            data-v0-t="badge">
-                            {{ $product->description }}
-                        </div>
-                        <div class="mt-2 text-lg font-bold text-white">PEN {{ $product->precio }}</div>
-                        <div class="text-sm text-lime-600">Envío gratis</div>
-                        {{-- <div class="text-sm text-muted-foreground">Horizon Duty Free Store</div> --}}
-                    </div>
-                    <div class="flex items-center space-x-2">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="text-muted-foreground">
-                            <path
-                                d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z">
-                            </path>
-                        </svg>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                            stroke-linejoin="round" class="text-muted-foreground">
-                            <path d="M3 6h18"></path>
-                            <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                            <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                        </svg>
-                        <div class="flex items-center space-x-2">
-                            <button
-                                class="text-white inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
-                                -
-                            </button>
-                            <span class="text-white">1</span>
-                            <button
-                                class="text-white inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 rounded-md px-3">
-                                +
-                            </button>
-                        </div>
-                    </div>
+                    <h4 class="font-medium text-xl text-white">Cesta de la compra</h4>
                 </div>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
+                </svg>
             </div>
-        @endforeach
+            <div x-show="open" @click.outside="open = false" x-transition:enter="transition ease-out duration-300"
+                x-transition:enter-start="opacity-0 translate-y-0" x-transition:enter-end="opacity-100 translate-y-0"
+                x-transition:leave="transition ease-in duration-300"
+                x-transition:leave-start="opacity-100 translate-y-10" x-transition:leave-end="opacity-0 translate-y-0"
+                class="w-full bg-gray-800 p-4 mt-4 rounded-lg shadow-lg">
+                <form action="{{ route('checkout') }}" method="POST" class="px-4 py-8 sm:px-6 lg:px-8">
+                    @csrf
+                    @foreach ($productos as $product)
+                        <div class="bg-gray-800 px-4 py-8 sm:px-6 lg:px-8" aria-modal="true" role="dialog"
+                            tabindex="-1">
+                            <div class="mt-4 space-y-6">
+                                <ul class="space-y-4">
+                                    <li class="flex items-center gap-4">
+                                        <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}"
+                                            class="size-16 rounded object-cover" />
+                                        <div>
+                                            <h3 class="text-base text-white font-bold">{{ $product->name }}</h3>
+                                            <dl class="mt-0.5 space-y-px text-[10px] text-gray-600">
+                                                <div>
+                                                    <dt class="inline text-white/90 text-xs">{{ $product->description }}
+                                                    </dt>
+                                                </div>
+                                                <div>
+                                                    <dt class="inline text-white/90 text-xs">Categoria:</dt>
+                                                    <dd class="inline text-white/80 text-xs">
+                                                        {{ $product->category->name }}</dd>
+                                                </div>
+                                                <div>
+                                                    <dt class="inline text-white/90 text-xs">Precio:</dt>
+                                                    <dd class="inline text-lime-500 text-xs">{{ $product->precio }}</dd>
+                                                </div>
+                                            </dl>
+                                        </div>
+                                        <div class="flex flex-1 items-center justify-end gap-2">
+                                            <div>
+                                                <label for="quantity_{{ $product->id }}" class="sr-only">Quantity</label>
+                                                <input type="number" min="1" value="1" name="quantities[{{ $product->id }}]" id="quantity_{{ $product->id }}"
+                                                    class="h-8 w-12 rounded border-gray-200 bg-gray-50 p-0 text-center text-xs text-gray-600 [-moz-appearance:_textfield] focus:outline-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none" />
+                                            </div>
+                                            <button class="text-gray-600 transition hover:text-red-600">
+                                                <span class="sr-only">Remove item</span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none"
+                                                    viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                                    class="h-7 w-7">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="space-y-4 text-center">
+                                    <a href="#"
+                                        class="block rounded-full bg-lime-500 px-5 py-3 text-sm text-gray-100 transition hover:bg-lime-600">
+                                        Checkout
+                                    </a>
+                                    <a href="/"
+                                        class="inline-block text-sm text-lime-500 underline underline-offset-4 transition hover:text-lime-600">
+                                        Seguir comprando
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    @endforeach
+                </form>
+            </div>
+        </div>
     </div>
     <div class="w-full md:w-1/3 space-y-4">
         <div class="p-4 bg-gray-100 dark:bg-gray-800 rounded-md shadow">
             <h3 class="text-lg font-semibold text-white">Resumen</h3>
             <div class="mt-4 space-y-2">
-                <div class="flex justify-between">
-                    <span class="text-white/80">Total parcial</span>
-                    <span class="text-white/80">PEN 147.04</span>
-                </div>
+                @foreach ($productos as $producto)
+                    <div class="flex justify-between">
+                        <span class="text-white/80">Total parcial</span>
+                        <span class="text-white/80">PEN {{ $producto->precio }}</span>
+                    </div>
+                @endforeach
                 <div class="flex justify-between">
                     <span class="text-white/80">Ahorro</span>
                     <span class="text-red-600">- PEN 14.70</span>
@@ -156,3 +281,4 @@
         </div>
     </div>
 </div>
+<script src="//unpkg.com/alpinejs" defer></script>
