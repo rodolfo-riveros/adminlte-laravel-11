@@ -19,8 +19,15 @@ class Product extends Model
         'manual'
     ];
 
+    // Relación con Categoría
     public function category()
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class, 'category_id');
+    }
+
+    // Relación con Pedidos
+    public function pedidos()
+    {
+        return $this->hasMany(Pedido::class, 'product_id');
     }
 }

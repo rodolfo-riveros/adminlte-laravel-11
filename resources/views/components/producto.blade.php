@@ -10,7 +10,8 @@
                 <p class="text-muted-foreground mb-4 text-white/90">{{ Str::limit($producto->description, 100) }}</p>
                 <div class="flex items-center justify-between">
                     <span class="text-primary font-bold text-lg text-lime-500">S/.{{ $producto->precio }}</span>
-                    <a @click="agregarAlCarrito({{ $producto->id }})" class="group inline-block rounded-full bg-gradient-to-r from-teal-500 via-green-500 to-lime-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75" href="javascript:void(0)">
+                    {{-- <a @click="agregarAlCarrito({{ $producto->id }})" class="group inline-block rounded-full bg-gradient-to-r from-teal-500 via-green-500 to-lime-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75" href="javascript:void(0)"> --}}
+                    <a @click="agregarAlCarrito({{ $producto->id }})" class="group inline-block rounded-full bg-gradient-to-r from-teal-500 via-green-500 to-lime-500 p-[2px] hover:text-white focus:outline-none focus:ring active:text-opacity-75" href="{{ route('carrito', ['product_ids' => json_encode([$producto->id])]) }}">
                         <span class="block rounded-full bg-white px-8 py-3 text-sm font-medium group-hover:bg-transparent">
                             Agregar al carrito
                         </span>
@@ -94,7 +95,7 @@
                                             </a>
                                         </span>
                                     </div>
-                                    <p class="leading-relaxed text-white/80">{{ $producto->description }}</p>
+                                    <p class="leading-relaxed text-white/80">{{ str::limit($producto->description, 200) }}</p>
                                     <div class="flex mt-6 items-center pb-5 border-b-2 border-gray-100 mb-5">
                                         <div class="flex">
                                             <span class="mr-3 text-white/80">Color</span>
@@ -102,26 +103,10 @@
                                             <button class="border-2 border-gray-300 ml-1 bg-gray-700 rounded-full w-6 h-6 focus:outline-none"></button>
                                             <button class="border-2 border-gray-300 ml-1 bg-lime-500 rounded-full w-6 h-6 focus:outline-none"></button>
                                         </div>
-                                        <div class="flex ml-6 items-center">
-                                            <span class="mr-3 text-white/80">Size</span>
-                                            <div class="relative">
-                                                <select class="rounded border appearance-none border-gray-300 py-2 focus:outline-none focus:ring-2 focus:ring-lime-200 focus:border-lime-500 text-base pl-3 pr-10">
-                                                    <option>SM</option>
-                                                    <option>M</option>
-                                                    <option>L</option>
-                                                    <option>XL</option>
-                                                </select>
-                                                <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
-                                                    <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4" viewBox="0 0 24 24">
-                                                        <path d="M6 9l6 6 6-6"></path>
-                                                    </svg>
-                                                </span>
-                                            </div>
-                                        </div>
                                     </div>
                                     <div class="flex">
                                         <span class="title-font font-medium text-2xl text-lime-500">S/. {{ $producto->precio }}</span>
-                                        <button class="flex ml-auto text-white bg-lime-500 border-0 py-2 px-6 focus:outline-none hover:bg-lime-600 rounded">Agregar al carrito</button>
+                                        <a @click="agregarAlCarrito({{ $producto->id }})" class="flex ml-auto text-white bg-lime-500 border-0 py-2 px-6 focus:outline-none hover:bg-lime-600 rounded" href="{{ route('carrito', ['product_ids' => json_encode([$producto->id])]) }}">Agregar al carrito</a>
                                         <button class="rounded-full w-10 h-10 bg-gray-200 p-0 border-0 inline-flex items-center justify-center text-gray-500 ml-4">
                                             <svg fill="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-5 h-5" viewBox="0 0 24 24">
                                                 <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"></path>
@@ -137,7 +122,7 @@
         </div>
     @endforeach
 </div>
-<script>
+{{-- <script>
     function agregarAlCarrito(productId) {
         let carrito = JSON.parse(localStorage.getItem('carrito')) || [];
         if (!carrito.includes(productId)) {
@@ -149,4 +134,4 @@
         let carritoUrl = '{{ route('carrito') }}' + '?product_ids=' + JSON.stringify(carrito);
         window.location.href = carritoUrl;
     }
-</script>
+</script> --}}

@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CarritoController;
-use App\Http\Controllers\Admin\ClienteController;
+use App\Http\Controllers\Admin\PedidoController;
 use App\Http\Controllers\Admin\TestimonioController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -23,12 +23,9 @@ Route::middleware('auth')->group(function () {
 // Nueva ruta para el carrito con el controlador CarritoController
 Route::get('/carrito', [CarritoController::class, 'index'])->middleware('auth')->name('carrito');
 
-Route::resource('clientes', ClienteController::class)->only(['index', 'store', 'update', 'destroy'])->names([
-    'index' => 'clientes.index',
-    'store' => 'clientes.store',
-    'update' => 'clientes.update',
-    'destroy' => 'clientes.destroy'
-]);
+
+// Ruta para mostrar el formulario y procesar los pedidos
+Route::post('/pedidos/store', [PedidoController::class, 'store'])->middleware('auth')->name('pedidos.store');
 
 Route::get('/nosotros', function () {
     return view('nosotros');
@@ -40,5 +37,9 @@ Route::resource('testimonio', TestimonioController::class)->only(['index', 'stor
     'update' => 'testimonio.update',
     'destroy' => 'testimonio.destroy'
 ]);
+
+Route::get('/pedido', function () {
+    return view('pedido');
+})->middleware(['auth', 'verified'])->name('pedido');
 
 require __DIR__.'/auth.php';

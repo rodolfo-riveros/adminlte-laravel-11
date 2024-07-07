@@ -126,7 +126,7 @@
                         <td>{{ $producto->id }}</td>
                         <td>{{ $producto->category->name }}</td>
                         <td>{{ $producto->name }}</td>
-                        <td>{{ $producto->description }}</td>
+                        <td>{{ Str::limit($producto->description, 50) }}</td>
                         <td>{{ $producto->precio }}</td>
                         <td>{{ $producto->stock }}</td>
                         <td>

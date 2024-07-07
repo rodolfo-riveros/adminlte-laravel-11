@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('clientes', function (Blueprint $table) {
+        Schema::create('pedidos', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')
@@ -20,11 +20,17 @@ return new class extends Migration
                 ->onDelete('cascade');
             $table->string('name');
             $table->string('email');
-            $table->string('phone');
-            $table->string('address');
-            $table->string('city');
-            $table->string('state');
-            $table->string('zip');
+            $table->string('phone')->nullable();
+            $table->string('address')->nullable();
+            $table->string('city')->nullable();
+            $table->string('state')->nullable();
+            $table->string('zip')->nullable();
+            $table->unsignedBigInteger('product_id'); // Relación con products
+            $table->foreign('product_id')
+                ->references('id')
+                ->on('products')
+                ->onDelete('cascade');
+            $table->integer('cantidad')->default(1);
             $table->timestamps();
         });
     }
@@ -34,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('clientes');
+        Schema::dropIfExists('pedidos');
     }
 };

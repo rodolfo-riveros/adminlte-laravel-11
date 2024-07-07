@@ -14,4 +14,10 @@ class Category extends Model
         'description',
         'color',
     ];
+
+    // Relación con Productos
+    public function products()
+    {
+        return $this->hasMany(Product::class, 'category_id');
+    }
 }
