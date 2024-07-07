@@ -1,3 +1,6 @@
+@php
+    $categories = \App\Models\Category::all();
+@endphp
 <!DOCTYPE html>
 <html lang="es">
 

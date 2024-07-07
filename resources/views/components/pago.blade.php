@@ -131,12 +131,11 @@
                 x-transition:leave="transition ease-in duration-300"
                 x-transition:leave-start="opacity-100 translate-y-10" x-transition:leave-end="opacity-0 translate-y-0"
                 class="w-full bg-gray-800 p-4 mt-4 rounded-lg shadow-lg">
-                <form action="{{ route('checkout') }}" method="POST" class="px-4 py-8 sm:px-6 lg:px-8">
-                    @csrf
-                    @foreach ($productos as $product)
-                        <div class="bg-gray-800 px-4 py-8 sm:px-6 lg:px-8" aria-modal="true" role="dialog"
-                            tabindex="-1">
-                            <div class="mt-4 space-y-6">
+                <div class="px-4 py-8 sm:px-6 lg:px-8">
+                    <div class="bg-gray-800 px-4 py-8 sm:px-6 lg:px-8" aria-modal="true" role="dialog"
+                        tabindex="-1">
+                        <div class="mt-4 space-y-6">
+                            @foreach ($productos as $product)
                                 <ul class="space-y-4">
                                     <li class="flex items-center gap-4">
                                         <img src="{{ Storage::url($product->image) }}" alt="{{ $product->name }}"
@@ -145,7 +144,8 @@
                                             <h3 class="text-base text-white font-bold">{{ $product->name }}</h3>
                                             <dl class="mt-0.5 space-y-px text-[10px] text-gray-600">
                                                 <div>
-                                                    <dt class="inline text-white/90 text-xs">{{ $product->description }}
+                                                    <dt class="inline text-white/90 text-xs">
+                                                        {{ Str::limit($product->description, 100) }}
                                                     </dt>
                                                 </div>
                                                 <div>
@@ -155,17 +155,22 @@
                                                 </div>
                                                 <div>
                                                     <dt class="inline text-white/90 text-xs">Precio:</dt>
-                                                    <dd class="inline text-lime-500 text-xs">{{ $product->precio }}</dd>
+                                                    <dd class="inline text-lime-500 text-xs">{{ $product->precio }}
+                                                    </dd>
                                                 </div>
                                             </dl>
                                         </div>
                                         <div class="flex flex-1 items-center justify-end gap-2">
                                             <div>
-                                                <label for="quantity_{{ $product->id }}" class="sr-only">Quantity</label>
-                                                <input type="number" min="1" value="1" name="quantities[{{ $product->id }}]" id="quantity_{{ $product->id }}"
+                                                <label for="quantity_{{ $product->id }}"
+                                                    class="sr-only">Quantity</label>
+                                                <input type="number" min="1" value="1"
+                                                    name="quantities[{{ $product->id }}]"
+                                                    id="quantity_{{ $product->id }}"
                                                     class="h-8 w-12 rounded border-gray-200 bg-gray-50 p-0 text-center text-xs text-gray-600 [-moz-appearance:_textfield] focus:outline-none [&::-webkit-inner-spin-button]:m-0 [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:m-0 [&::-webkit-outer-spin-button]:appearance-none" />
                                             </div>
-                                            <button class="text-gray-600 transition hover:text-red-600">
+                                            <button @click="removeFromCart({{ $product->id }})"
+                                                class="text-gray-600 transition hover:text-red-600">
                                                 <span class="sr-only">Remove item</span>
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                     viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
@@ -177,20 +182,20 @@
                                         </div>
                                     </li>
                                 </ul>
-                                <div class="space-y-4 text-center">
-                                    <a href="#"
-                                        class="block rounded-full bg-lime-500 px-5 py-3 text-sm text-gray-100 transition hover:bg-lime-600">
-                                        Checkout
-                                    </a>
-                                    <a href="/"
-                                        class="inline-block text-sm text-lime-500 underline underline-offset-4 transition hover:text-lime-600">
-                                        Seguir comprando
-                                    </a>
-                                </div>
+                            @endforeach
+                            <div class="space-y-4 text-center">
+                                <a href="#"
+                                    class="block rounded-full bg-lime-500 px-5 py-3 text-sm text-gray-100 transition hover:bg-lime-600">
+                                    Checkout
+                                </a>
+                                <a href="/"
+                                    class="inline-block text-sm text-lime-500 underline underline-offset-4 transition hover:text-lime-600">
+                                    Seguir comprando
+                                </a>
                             </div>
                         </div>
-                    @endforeach
-                </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -282,3 +287,12 @@
     </div>
 </div>
 <script src="//unpkg.com/alpinejs" defer></script>
+<script src="https://cdn.jsdelivr.net/gh/alpinejs/alpine@v2.x.x/dist/alpine.min.js" defer></script>
+<script>
+    function removeFromCart(productId) {
+
+        // Remover el producto de la vista
+        document.getElementById('product-' + productId).remove();
+    }
+</script>
+

@@ -1,10 +1,9 @@
 <?php
 
-use App\Http\Controllers\Admin\CheckoutController;
+use App\Http\Controllers\Admin\CarritoController;
 use App\Http\Controllers\Admin\ClienteController;
 use App\Http\Controllers\Admin\TestimonioController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,12 +20,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/carrito', function () {
-    $user = Auth::user();
-    $productos = \App\Models\Product::all();
-    $categories = \App\Models\Category::all();
-    return view('carrito', compact('user', 'productos', 'categories'));
-})->middleware('auth')->name('carrito');
+// Nueva ruta para el carrito con el controlador CarritoController
+Route::get('/carrito', [CarritoController::class, 'index'])->middleware('auth')->name('carrito');
 
 Route::resource('clientes', ClienteController::class)->only(['index', 'store', 'update', 'destroy'])->names([
     'index' => 'clientes.index',
@@ -34,8 +29,6 @@ Route::resource('clientes', ClienteController::class)->only(['index', 'store', '
     'update' => 'clientes.update',
     'destroy' => 'clientes.destroy'
 ]);
-
-Route::post('/checkout', [CheckoutController::class, 'checkout'])->name('checkout');
 
 Route::get('/nosotros', function () {
     return view('nosotros');
