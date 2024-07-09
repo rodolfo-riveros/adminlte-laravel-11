@@ -1,16 +1,16 @@
 @extends('adminlte::page')
 
-@section('title', 'Categoria')
+@section('title', 'Usuario')
 
 @section('content_header')
-    <h1>Categoría</h1>
+    <h1>Usuarios</h1>
 @stop
 
 @section('content_header')
 @stop
 
 @section('content')
-    @livewire('admin.category-index')
+    @livewire('admin.user-index')
 @stop
 
 @section('footer')
@@ -42,7 +42,7 @@
     <script src="https://cdn.datatables.net/responsive/2.4.1/js/dataTables.responsive.min.js"></script>
     <script src="https://cdn.datatables.net/responsive/2.4.1/js/responsive.bootstrap5.min.js"></script>
     <script>
-        $('#categoria').DataTable({
+        $('#user').DataTable({
             responsive: true,
             autoWidth: false,
             "language": {

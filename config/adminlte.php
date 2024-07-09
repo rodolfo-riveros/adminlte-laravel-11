@@ -320,6 +320,11 @@ return [
             'icon' => 'fas fa-fw fa-home',
         ],
         [
+            'text' => 'Usuario',
+            'route' => 'admin.usuario.index',
+            'icon' => 'fas fa-fw fa-users',
+        ],
+        [
             'text' => 'Categoria',
             'route' => 'admin.categoria.index',
             'icon' => 'fas fa-fw fa-file',
@@ -328,6 +333,11 @@ return [
             'text' => 'Producto',
             'route' => 'admin.producto.index',
             'icon' => 'fas fa-fw fa-pen',
+        ],
+        [
+            'text' => 'Pedido',
+            'route' => 'admin.pedido.index',
+            'icon' => 'fas fa-fw fa-share',
         ],
         // ['header' => 'account_settings'],
         // [

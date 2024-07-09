@@ -1,5 +1,6 @@
 @php
-    $pedidos = \App\Models\Pedido::all();
+    $user = auth()->user();
+    $pedidos = \App\Models\Pedido::where('user_id', $user->id)->get();
 @endphp
 <!DOCTYPE html>
 <html lang="es">
