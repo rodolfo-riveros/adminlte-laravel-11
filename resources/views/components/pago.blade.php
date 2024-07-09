@@ -197,15 +197,15 @@
                         <span class="text-red-600">PEN {{ $subtotal }}</span>
                     </div>
                     <hr class="border-t border-gray-300">
-
                 @endforeach
 
                 <div class="flex justify-between font-bold text-white">
                     <span>Total a pagar:</span>
                     <span class="text-lime-500">PEN {{ $total }}</span>
                 </div>
-                <button id="pagarBtn"
-                    class="inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full mt-4 bg-lime-500 text-white">
+                <button id="pagarBtn" target="_blank"
+                    class="inline-flex items-center justify-center whitespace-nowrap rounded-full text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-primary/90 h-10 px-4 py-2 w-full mt-4 bg-lime-500 text-white"
+                    onclick="downloadPdf()">
                     Pagar
                 </button>
             </div>
@@ -300,4 +300,9 @@
         // Después de que el pago haya sido procesado exitosamente, llama a la función para mostrar la notificación
         mostrarNotificacionExito();
     });
+</script>
+<script>
+    function downloadPdf() {
+        window.open("{{ route('generate.pdf') }}", "_blank");
+    }
 </script>

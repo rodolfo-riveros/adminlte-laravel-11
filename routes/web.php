@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\CarritoController;
+use App\Http\Controllers\Admin\PdfController;
 use App\Http\Controllers\Admin\PedidoController;
 use App\Http\Controllers\Admin\TestimonioController;
 use App\Http\Controllers\ProfileController;
@@ -41,5 +42,7 @@ Route::resource('testimonio', TestimonioController::class)->only(['index', 'stor
 Route::get('/pedido', function () {
     return view('pedido');
 })->middleware(['auth', 'verified'])->name('pedido');
+
+Route::get('/generate-pdf', [PdfController::class, 'generatePdf'])->name('generate.pdf');
 
 require __DIR__.'/auth.php';
