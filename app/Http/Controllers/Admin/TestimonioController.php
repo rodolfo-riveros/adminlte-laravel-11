@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class TestimonioController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -30,16 +25,6 @@ class TestimonioController extends Controller
         } else {
             return redirect()->back()->withErrors('No se registró correctamente el testimonio.');
         }
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
     }
 
     public function showTestimonials()

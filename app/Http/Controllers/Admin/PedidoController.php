@@ -8,11 +8,6 @@ use Illuminate\Http\Request;
 
 class PedidoController extends Controller
 {
-    public function index()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
         $validatedData = $request->validate([
@@ -50,15 +45,5 @@ class PedidoController extends Controller
         } catch (\Exception $e) {
             return back()->withInput()->withErrors(['error' => 'Error al procesar el pedido.']);
         }
-    }
-
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    public function destroy(string $id)
-    {
-        //
     }
 }

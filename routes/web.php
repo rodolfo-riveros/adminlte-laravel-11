@@ -45,4 +45,8 @@ Route::get('/pedido', function () {
 
 Route::get('/generate-pdf', [PdfController::class, 'generatePdf'])->name('generate.pdf');
 
+Route::get('/servicio', function () {
+    return view('servicio');
+})->middleware(['auth', 'verified'])->name('servicio');
+
 require __DIR__.'/auth.php';

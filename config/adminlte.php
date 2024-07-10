@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Validation\Rules\Can;
+
 return [
 
     /*
@@ -318,26 +320,31 @@ return [
             'text' => 'Inicio',
             'route' => 'admin.home.index',
             'icon' => 'fas fa-fw fa-home',
+            'can' => 'admin.home.index',
         ],
         [
             'text' => 'Usuario',
             'route' => 'admin.usuario.index',
             'icon' => 'fas fa-fw fa-users',
+            'can' => 'admin.usuario.index',
         ],
         [
             'text' => 'Categoria',
             'route' => 'admin.categoria.index',
             'icon' => 'fas fa-fw fa-file',
+            'can' => 'admin.categoria.index',
         ],
         [
             'text' => 'Producto',
             'route' => 'admin.producto.index',
             'icon' => 'fas fa-fw fa-pen',
+            'can' => 'admin.producto.index',
         ],
         [
             'text' => 'Pedido',
             'route' => 'admin.pedido.index',
             'icon' => 'fas fa-fw fa-share',
+            'can' => 'admin.pedido.index',
         ],
         // ['header' => 'account_settings'],
         // [

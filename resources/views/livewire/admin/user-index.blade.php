@@ -113,14 +113,14 @@
                                     @csrf
                                     @method('PUT')
                                     <div class="modal-body">
-                                        {{-- @foreach ($roles as $role)
-                                            <div class="form-check">
+                                        @foreach ($roles as $role)
+                                            <div class="form-check py-2">
                                                 <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}" id="role{{ $role->id }}" {{ in_array($role->id, $user->roles->pluck('id')->toArray()) ? 'checked' : '' }}>
                                                 <label class="form-check-label" for="role{{ $role->id }}">
                                                     {{ $role->name }}
                                                 </label>
                                             </div>
-                                        @endforeach --}}
+                                        @endforeach
                                         <button type="submit" class="btn btn-primary mt-2">Asignar rol</button>
                                     </div>
                                 </form>

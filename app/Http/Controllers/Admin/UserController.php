@@ -15,14 +15,6 @@ class UserController extends Controller
         return view('admin.user.index');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
     public function store(Request $request)
     {
         $request->validate([
