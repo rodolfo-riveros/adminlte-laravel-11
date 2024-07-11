@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\Admin\BuscarController;
 use App\Http\Controllers\Admin\CarritoController;
+use App\Http\Controllers\Admin\FiltroController;
 use App\Http\Controllers\Admin\PdfController;
 use App\Http\Controllers\Admin\PedidoController;
 use App\Http\Controllers\Admin\TestimonioController;
@@ -10,6 +12,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('index');
 });
+
+Route::get('/filter-products/{categoryId?}', [FiltroController::class, 'filterByCategory'])->name('productos.filter');
+
+Route::post('/buscar-productos', [BuscarController::class, 'buscarProductos'])->name('productos.buscar');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
