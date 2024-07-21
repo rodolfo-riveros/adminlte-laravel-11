@@ -1,8 +1,14 @@
 @php
     $categories = \App\Models\Category::all();
     use App\Models\Pedido;
-    // Obtener los últimos dos pedidos
-    $pedidos = Pedido::orderBy('created_at', 'desc')->take(1)->get();
+    // Obtener el ID del usuario logueado
+    $userId = Auth::id();
+
+    // Obtener los últimos dos pedidos del usuario logueado
+    $pedidos = Pedido::where('user_id', $userId)
+        ->orderBy('created_at', 'desc')
+        ->take(1)
+        ->get();
 @endphp
 
 <!DOCTYPE html>
