@@ -13,8 +13,8 @@
             Swal.fire({
                 icon: 'error',
                 title: 'Error',
-                text: "{{ session('error') }}"
-            })
+                html: '<ul>@foreach ($errors->all() as $error) <li>{{ $error }}</li> @endforeach</ul>'
+            });
         </script>
     @endif
     <!-- formulario -->
@@ -32,13 +32,15 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="name">Nombre y Apellidos</label>
-                            <input type="text" class="form-control" name="name" placeholder="Nombres y apellidos" required>
+                            <input type="text" class="form-control" name="name" placeholder="Nombres y apellidos"
+                                required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="email">Correo Electrónico</label>
-                            <input type="email" class="form-control" name="email" placeholder="Correo electrónico" required>
+                            <input type="email" class="form-control" name="email" placeholder="Correo electrónico"
+                                required>
                         </div>
                     </div>
                 </div>
@@ -46,13 +48,15 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="name">Contraseña</label>
-                            <input type="password" class="form-control" name="password" placeholder="Escriba su contraseña" required>
+                            <input type="password" class="form-control" name="password"
+                                placeholder="Escriba su contraseña" required>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <label for="password_confirmation">Confirmar Contraseña</label>
-                            <input type="password" class="form-control" name="password_confirmation" placeholder="Confirmar contraseña" required>
+                            <input type="password" class="form-control" name="password_confirmation"
+                                placeholder="Confirmar contraseña" required>
                         </div>
                     </div>
                 </div>
@@ -63,7 +67,7 @@
         </div>
     </div>
 
-    {{-- tabla de usuarios--}}
+    {{-- tabla de usuarios --}}
     <div class="card card-primary card-outline">
         <div class="card-header">
             <h3 class="card-title text-center">
@@ -84,49 +88,55 @@
                 </thead>
                 <tbody>
                     @foreach ($users as $user)
-                    <tr>
-                        <td>{{ $user->id}}</td>
-                        <td>{{ $user->name}}</td>
-                        <td>{{ $user->email}}</td>
-                        <td width="10px">
-                            <a href="" class="btn btn-success" data-toggle="modal" data-target="#rolModal{{ $user->id }}"><i class="fas fa-pen"></i></a>
-                        </td>
-                        <td width="10px">
-                            <form action="{{ route('admin.usuario.destroy', $user->id) }}" method="POST">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
-                            </form>
-                        </td>
-                    </tr>
-                    <!-- Modal de edición -->
-                    <div class="modal fade" id="rolModal{{ $user->id }}" tabindex="-1" role="dialog" aria-labelledby="rolModal{{ $user->id }}Label" aria-hidden="true">
-                        <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="rolModal{{ $user->id }}Label">Asignar un Rol</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <form action="{{ route('admin.usuario.update', $user->id) }}" method="POST" enctype="multipart/form-data">
+                        <tr>
+                            <td>{{ $user->id }}</td>
+                            <td>{{ $user->name }}</td>
+                            <td>{{ $user->email }}</td>
+                            <td width="10px">
+                                <a href="" class="btn btn-success" data-toggle="modal"
+                                    data-target="#rolModal{{ $user->id }}"><i class="fas fa-pen"></i></a>
+                            </td>
+                            <td width="10px">
+                                <form action="{{ route('admin.usuario.destroy', $user->id) }}" method="POST">
                                     @csrf
-                                    @method('PUT')
-                                    <div class="modal-body">
-                                        @foreach ($roles as $role)
-                                            <div class="form-check py-2">
-                                                <input class="form-check-input" type="checkbox" name="roles[]" value="{{ $role->id }}" id="role{{ $role->id }}" {{ in_array($role->id, $user->roles->pluck('id')->toArray()) ? 'checked' : '' }}>
-                                                <label class="form-check-label" for="role{{ $role->id }}">
-                                                    {{ $role->name }}
-                                                </label>
-                                            </div>
-                                        @endforeach
-                                        <button type="submit" class="btn btn-primary mt-2">Asignar rol</button>
-                                    </div>
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger"><i class="fas fa-trash"></i></button>
                                 </form>
+                            </td>
+                        </tr>
+                        <!-- Modal de edición -->
+                        <div class="modal fade" id="rolModal{{ $user->id }}" tabindex="-1" role="dialog"
+                            aria-labelledby="rolModal{{ $user->id }}Label" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="rolModal{{ $user->id }}Label">Asignar un Rol
+                                        </h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <form action="{{ route('admin.usuario.update', $user->id) }}" method="POST"
+                                        enctype="multipart/form-data">
+                                        @csrf
+                                        @method('PUT')
+                                        <div class="modal-body">
+                                            @foreach ($roles as $role)
+                                                <div class="form-check py-2">
+                                                    <input class="form-check-input" type="checkbox" name="roles[]"
+                                                        value="{{ $role->id }}" id="role{{ $role->id }}"
+                                                        {{ in_array($role->id, $user->roles->pluck('id')->toArray()) ? 'checked' : '' }}>
+                                                    <label class="form-check-label" for="role{{ $role->id }}">
+                                                        {{ $role->name }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                            <button type="submit" class="btn btn-primary mt-2">Asignar rol</button>
+                                        </div>
+                                    </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
                     @endforeach
                 </tbody>
             </table>

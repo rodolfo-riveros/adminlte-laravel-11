@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class ProductoController extends Controller
 {
@@ -15,82 +17,93 @@ class ProductoController extends Controller
 
     public function store(Request $request)
     {
-        // Validación de los datos
-        $validateData = $request->validate([
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required',
-            'description' => 'required',
-            'precio' => 'required|numeric',
-            'stock' => 'required|integer'
-        ]);
-
-        $producto = new Product();
-        $producto->category_id = $validateData['category_id'];
-        $producto->name = $validateData['name'];
-        $producto->description = $validateData['description'];
-        $producto->precio = $validateData['precio'];
-        $producto->stock = $validateData['stock'];
-
-        // Manejo del archivo de imagen
-        if ($request->hasFile('image')) {
-            $imageFile = $request->file('image');
-            $imagePath = $imageFile->store('images', 'public');
-            $producto->image = $imagePath;
-        }
-
-        // Manejo del archivo de manual
-        if ($request->hasFile('manual')) {
-            $manualFile = $request->file('manual');
-            $manualPath = $manualFile->store('manuals', 'public');
-            $producto->manual = $manualPath;
-        }
-
-        $producto->save();
-
-        if ($producto) {
-            return redirect()->route('admin.producto.index')->with('success', 'El producto fue registrado correctamente.');
-        } else {
-            return redirect()->back()->withErrors('No se registró correctamente el producto.');
-        }
-    }
-
-    public function update(Request $request, string $id)
-    {
-        $validateData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'category_id' => 'required|exists:categories,id',
             'name' => 'required',
             'description' => 'required',
             'precio' => 'required|numeric',
             'stock' => 'required|integer',
-            'image' => 'required',
-            'manual' => 'required|file|mimes:pdf',
+            'image' => 'nullable|image',
+            'manual' => 'nullable|file|mimes:pdf',
         ]);
 
-        $producto = Product::findOrFail($id);
-        $producto->category_id = $validateData['category_id'];
-        $producto->name = $validateData['name'];
-        $producto->description = $validateData['description'];
-        $producto->precio = $validateData['precio'];
-        $producto->stock = $validateData['stock'];
+        try {
+            $validator->validate();
 
-        if ($request->hasFile('image')) {
-            $imageFile = $request->file('image');
-            $imagePath = $imageFile->store('image', 'public');
-            $producto->image = $imagePath;
+            $producto = new Product();
+            $producto->category_id = $request->category_id;
+            $producto->name = $request->name;
+            $producto->description = $request->description;
+            $producto->precio = $request->precio;
+            $producto->stock = $request->stock;
+
+            if ($request->hasFile('image')) {
+                $imageFile = $request->file('image');
+                $imagePath = $imageFile->store('images', 'public');
+                $producto->image = $imagePath;
+            }
+
+            if ($request->hasFile('manual')) {
+                $manualFile = $request->file('manual');
+                $manualPath = $manualFile->store('manuals', 'public');
+                $producto->manual = $manualPath;
+            }
+
+            $producto->save();
+
+            if ($producto) {
+                return redirect()->route('admin.producto.index')->with('success', 'El producto fue registrado correctamente.');
+            } else {
+                return back()->withErrors(['general' => 'Ocurrió un error al crear el producto.']);
+            }
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->validator->errors());
         }
+    }
 
-        if ($request->hasFile('manual')) {
-            $manualFile = $request->file('manual');
-            $manualPath = $manualFile->store('manual', 'public');
-            $producto->manual = $manualPath;
-        }
+    public function update(Request $request, string $id)
+    {
+        $validator = Validator::make($request->all(), [
+            'category_id' => 'required|exists:categories,id',
+            'name' => 'required',
+            'description' => 'required',
+            'precio' => 'required|numeric',
+            'stock' => 'required|integer',
+            'image' => 'nullable|image',
+            'manual' => 'nullable|file|mimes:pdf',
+        ]);
 
-        $producto->save();
+        try {
+            $validator->validate();
 
-        if ($producto){
-            return redirect()->route('admin.producto.index')->with('success', 'El producto fue actualizada correctamente.');
-        }else {
-            return redirect()->back()->withErrors('No se actualizo correctamente el producto.'. $producto->getMessage());
+            $producto = Product::findOrFail($id);
+            $producto->category_id = $request->category_id;
+            $producto->name = $request->name;
+            $producto->description = $request->description;
+            $producto->precio = $request->precio;
+            $producto->stock = $request->stock;
+
+            if ($request->hasFile('image')) {
+                $imageFile = $request->file('image');
+                $imagePath = $imageFile->store('images', 'public');
+                $producto->image = $imagePath;
+            }
+
+            if ($request->hasFile('manual')) {
+                $manualFile = $request->file('manual');
+                $manualPath = $manualFile->store('manuals', 'public');
+                $producto->manual = $manualPath;
+            }
+
+            $producto->save();
+
+            if ($producto) {
+                return redirect()->route('admin.producto.index')->with('success', 'El producto fue actualizada correctamente.');
+            } else {
+                return back()->withErrors(['general' => 'Ocurrió un error al actualizar el producto.']);
+            }
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->validator->errors());
         }
     }
 

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 
 class CategoryController extends Controller
 {
@@ -15,45 +17,57 @@ class CategoryController extends Controller
 
     public function store(Request $request)
     {
-        $validateData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'description' => 'required',
             'color' => 'required',
         ]);
 
-        $category = new Category();
-        $category->name = $validateData['name'];
-        $category->color = $validateData['color'];
-        $category->description = $validateData['description'];
+        try {
+            $validator->validate();
 
-        $category->save();
+            $category = new Category();
+            $category->name = $request->name;
+            $category->description = $request->description;
+            $category->color = $request->color;
 
-        if ($category){
-            return redirect()->route('admin.categoria.index')->with('success', 'La categoria fue registrado correctamente.');
-        }else {
-            return redirect()->back()->withErrors('No se registro correctamente la categoria.'. $category->getMessage());
+            $category->save();
+
+            if ($category) {
+                return redirect()->route('admin.categoria.index')->with('success', 'La categoria fue registrada correctamente.');
+            } else {
+                return back()->withErrors(['general' => 'Ocurrió un error al crear la categoría.']);
+            }
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->validator->errors());
         }
     }
 
     public function update(Request $request, string $id)
     {
-        $validateData = $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => 'required',
             'description' => 'required',
             'color' => 'required',
         ]);
 
-        $category = Category::findOrFail($id);
-        $category->name = $validateData['name'];
-        $category->description = $validateData['description'];
-        $category->color = $validateData['color'];
+        try {
+            $validator->validate();
 
-        $category->save();
+            $category = Category::findOrFail($id);
+            $category->name = $request->name;
+            $category->description = $request->description;
+            $category->color = $request->color;
 
-        if ($category){
-            return redirect()->route('admin.categoria.index')->with('success', 'La categoria fue actualizada correctamente.');
-        }else {
-            return redirect()->back()->withErrors('No se actualizo correctamente la categoria.'. $category->getMessage());
+            $category->save();
+
+            if ($category) {
+                return redirect()->route('admin.categoria.index')->with('success', 'La categoria fue actualizada correctamente.');
+            } else {
+                return back()->withErrors(['general' => 'Ocurrió un error al actualizar la categoría.']);
+            }
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->validator->errors());
         }
     }
 

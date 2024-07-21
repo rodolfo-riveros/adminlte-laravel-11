@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rules;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
@@ -17,22 +19,28 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
-        $request->validate([
+        $validator = Validator::make($request->all(), [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+        try {
+            $validator->validate();
 
-        if ($user) {
-            return redirect()->route('admin.usuario.index')->with('success', 'Usuario registrado exitosamente.');
-        } else {
-            return redirect()->back()->withErrors('No se pudo  registrar el Usuario:'. $user->getMessage());
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+            ]);
+
+            if ($user) {
+                return redirect()->route('admin.usuario.index')->with('success', 'Usuario registrado exitosamente.');
+            } else {
+                return back()->withErrors(['general' => 'Ocurrió un error al crear el usuario.']);
+            }
+        } catch (ValidationException $e) {
+            return back()->withErrors($e->validator->errors());
         }
     }
 

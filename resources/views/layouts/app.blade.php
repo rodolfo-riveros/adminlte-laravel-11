@@ -16,8 +16,10 @@
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100">
-            @include('layouts.navigation')
-
+            {{-- @include('layouts.navigation') --}}
+            <header class="bg-primary text-primary-foreground py-4 px-6 bg-gray-100 dark:bg-gray-900">
+                @include('components.navbar')
+            </header>
             <!-- Page Heading -->
             @isset($header)
                 <header class="bg-white shadow">
